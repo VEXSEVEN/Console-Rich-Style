@@ -45,33 +45,136 @@
 
 ---
 
-## 📁 Installation
+### 📁 Installation & Usage Guide
 
-### Prerequisites
-- C++11 compatible compiler (e.g., `g++` or `clang++`)
-- MSYS2 / MinGW or ANSI-compatible terminal
+This guide will show you how to "install" your CRS library so you can use it easily in any MinGW C++ project with VS Code.
 
-### Steps
-1. Copy `crs.h` to your project or:
-   ```bash
-   C:\msys64\mingw64\include\crs.h
-   ```
-2. Include it in your code:
-   ```cpp
-   #include "crs.h"
-   ```
+## 🛠️ Part 1: Install CRS as a System Library (One-Time Setup)
+
+These steps make your CRS library available to all your MinGW C++ projects.
+
+Prepare crs.h and crs.cpp:
+Place your crs.h (containing only function declarations) and crs.cpp (containing function implementations) files in a temporary working directory (e.g., C:\temp\crs_build).
+
+Compile crs.cpp into an object file:
+Open your terminal (MSYS2, Git Bash, or CMD/PowerShell if g++ is in your PATH), navigate to your temporary directory, and run:
+Bash
+
+g++ -c crs.cpp -o crs.o -std=c++17
+
+Create the static library libcrs.a:
+In the same directory, run:
+Bash
+
+ar rcs libcrs.a crs.o
+
+Copy crs.h to MinGW's include directory:
+Bash
+
+copy crs.h C:\msys64\mingw64\include\
+
+(If using MSYS2/Git Bash, you can use cp crs.h /mingw64/include/)
+
+Copy libcrs.a to MinGW's lib directory:
+Bash
+
+    copy libcrs.a C:\msys64\mingw64\lib\
+
+(If using MSYS2/Git Bash, you can use cp libcrs.a /mingw64/lib/)
+
+## 🖥️ Part 2: Configure VS Code for IntelliSense (One-Time Setup for MinGW)
+
+This ensures VS Code's IntelliSense (for autocompletion, error checking) can find crs.h.
+
+Open VS Code Command Palette: Press Ctrl+Shift+P.
+
+Select C/C++: Edit Configurations (UI).
+
+    Under "Include path", click "+ Add Folder".
+
+Add the path to your MinGW's include directory:
+
+    C:\msys64\mingw64\include
+
+You'll likely already have ${workspaceFolder}/** and other paths. Just add this one.
+
+    Save the c_cpp_properties.json file.
+
+Reload VS Code (or Ctrl+Shift+P and "Reload Window") for changes to take effect.
+
+## 🚀 Part 3: Create a VS Code Project Template (Optional but Recommended)
+
+This step streamlines creating new projects, so you don't have to edit tasks.json every time.
+
+Create a template folder: Make a new folder, for example, C:\Users\YourUser\Documents\CppProjectTemplate.
+
+Create .vscode/tasks.json:
+Inside this template folder, create a .vscode subfolder, and then a tasks.json file inside .vscode. Paste the following content into tasks.json:
+JSON
+
+
+    {
+        "tasks": [
+            {
+                "type": "cppbuild",
+                "label": "Build C++ Project (CRS & C++17)",
+                "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+                "args": [
+                    "-fdiagnostics-color=always",
+                    "-g",
+                    "${file}",
+                    "-o",
+                    "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                    "-std=c++17",
+                    "-lcrs"
+                ],
+                "options": {
+                    "cwd": "${fileDirname}"
+                },
+                "problemMatcher": [
+                    "$gcc"
+                ],
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                },
+                "detail": "General build task for C++ projects using CRS library and C++17."
+            }
+        ],
+        "version": "2.0.0"
+    }
+
+## ⚡ Part 4: Use CRS in Your Projects (For Every Project)
+
+Now, when you want to start a new C++ project that uses CRS, follow these simple steps:
+
+Start a new project:
+Copy your CppProjectTemplate folder.
+Paste and rename it to your new project's name (e.g., MyNewAwesomeApp).
+Open this new project folder in VS Code (File > Open Folder...).
+Include crs.h in your C++ code:
+In any .cpp file where you want to use CRS functions (e.g., main.cpp), add:
+C++
+
+    #include <crs.h> // Use angle brackets for system-installed headers
+
+Compile your project:
+Open the .cpp file you want to compile in VS Code.
+Press Ctrl+Shift+B (or Cmd+Shift+B on macOS).
+VS Code will automatically use the tasks.json from your project folder to compile and link your application with CRS.
+    
 
 ---
 
-## 🧪 Usage
+## 🧪 Usage & Experimental
 
 ```cpp
 #include "crs.h"
 #include <iostream>
 
 int main() {
-    setTextColor("#00ff00");
-    setBackgroundColor("#000000");
+    setTextColor("00ff00");
+    setBackgroundColor("000000");
     setBold();
     std::cout << "Bold green on black" << std::endl;
 
