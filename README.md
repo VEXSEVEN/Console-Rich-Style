@@ -1,4 +1,4 @@
-![Logo](3.png)
+![Logo](2.png)
 
 # crs.h - Console Rich Style
 
