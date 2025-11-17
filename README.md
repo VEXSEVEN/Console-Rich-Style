@@ -47,6 +47,10 @@
 
 ### 📁 Installation & Usage Guide
 
+
+Watch: [CRS - Console rich style (installing Guide)](https://www.youtube.com/watch?v=0XfuDuGuiqc)
+
+
 This guide will show you how to "install" your CRS library so you can use it easily in any MinGW C++ project with VS Code.
 
 ## 🛠️ Part 1: Install CRS as a System Library (One-Time Setup)
