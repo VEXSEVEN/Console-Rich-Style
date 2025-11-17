@@ -138,7 +138,7 @@ JSON
                     "kind": "build",
                     "isDefault": true
                 },
-                "detail": "General build task for C++ projects using CRS library and C++17."
+                "detail": "General build task for C++17."
             }
         ],
         "version": "2.0.0"
